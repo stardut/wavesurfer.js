@@ -220,8 +220,7 @@ export default class WaveSurfer extends util.Observer {
         minPxPerSec: 20,
         normalize: false,
         partialRender: false,
-        pixelRatio:
-            window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI,
+        pixelRatio: window.devicePixelRatio || screen.deviceXDPI / screen.logicalXDPI,
         plugins: [],
         progressColor: '#555',
         removeMediaElementOnDestroy: true,
@@ -302,9 +301,9 @@ export default class WaveSurfer extends util.Observer {
 
         /** @private */
         this.container =
-            'string' == typeof params.container
-                ? document.querySelector(this.params.container)
-                : this.params.container;
+            'string' == typeof params.container ?
+            document.querySelector(this.params.container) :
+            this.params.container;
 
         if (!this.container) {
             throw new Error('Container element not found');
@@ -334,7 +333,9 @@ export default class WaveSurfer extends util.Observer {
         }
 
         if (this.params.rtl === true) {
-            util.style(this.container, { transform: 'rotateY(180deg)' });
+            util.style(this.container, {
+                transform: 'rotateY(180deg)'
+            });
         }
 
         if (this.params.backgroundColor) {
@@ -417,9 +418,9 @@ export default class WaveSurfer extends util.Observer {
                     this.drawer.fireEvent('redraw');
                 }
             },
-            typeof this.params.responsive === 'number'
-                ? this.params.responsive
-                : 100
+            typeof this.params.responsive === 'number' ?
+            this.params.responsive :
+            100
         );
 
         return this;
@@ -610,7 +611,13 @@ export default class WaveSurfer extends util.Observer {
 
         // Click-to-seek
         this.drawer.on('click', (e, progress) => {
-            setTimeout(() => this.seekTo(progress), 0);
+            // setTimeout(() => this.seekTo(progress), 0);
+            setTimeout(() => {
+                const oldScrollParent = this.params.scrollParent;
+                this.params.scrollParent = false;
+                e.fireEvent('click', n * this.getDuration())
+                this.params.scrollParent = oldScrollParent;
+            }, 0);
         });
 
         // Relay the scroll event from the drawer
@@ -1075,7 +1082,9 @@ export default class WaveSurfer extends util.Observer {
      */
     setBackgroundColor(color) {
         this.params.backgroundColor = color;
-        util.style(this.container, { background: this.params.backgroundColor });
+        util.style(this.container, {
+            background: this.params.backgroundColor
+        });
     }
 
     /**
@@ -1130,8 +1139,8 @@ export default class WaveSurfer extends util.Observer {
     drawBuffer() {
         const nominalWidth = Math.round(
             this.getDuration() *
-                this.params.minPxPerSec *
-                this.params.pixelRatio
+            this.params.minPxPerSec *
+            this.params.pixelRatio
         );
         const parentWidth = this.drawer.getWidth();
         let width = nominalWidth;
@@ -1283,11 +1292,9 @@ export default class WaveSurfer extends util.Observer {
             // check whether the preload attribute will be usable and if not log
             // a warning listing the reasons why not and nullify the variable
             const preloadIgnoreReasons = {
-                "Preload is not 'auto', 'none' or 'metadata'":
-                    ['auto', 'metadata', 'none'].indexOf(preload) === -1,
+                "Preload is not 'auto', 'none' or 'metadata'": ['auto', 'metadata', 'none'].indexOf(preload) === -1,
                 'Peaks are not provided': !peaks,
-                'Backend is not of type MediaElement':
-                    this.params.backend !== 'MediaElement',
+                'Backend is not of type MediaElement': this.params.backend !== 'MediaElement',
                 'Url is not of type string': typeof url !== 'string'
             };
             const activeReasons = Object.keys(preloadIgnoreReasons).filter(
@@ -1297,7 +1304,7 @@ export default class WaveSurfer extends util.Observer {
                 // eslint-disable-next-line no-console
                 console.warn(
                     'Preload parameter of wavesurfer.load will be ignored because:\n\t- ' +
-                        activeReasons.join('\n\t- ')
+                    activeReasons.join('\n\t- ')
                 );
                 // stop invalid values from being used
                 preload = null;
@@ -1497,7 +1504,7 @@ export default class WaveSurfer extends util.Observer {
         if (!noWindow) {
             window.open(
                 'data:application/json;charset=utf-8,' +
-                    encodeURIComponent(json)
+                encodeURIComponent(json)
             );
         }
         return json;
@@ -1565,7 +1572,9 @@ export default class WaveSurfer extends util.Observer {
         this.clearTmpEvents();
         this.drawer.progress(0);
         this.drawer.setWidth(0);
-        this.drawer.drawPeaks({ length: this.drawer.getWidth() }, 0);
+        this.drawer.drawPeaks({
+            length: this.drawer.getWidth()
+        }, 0);
     }
 
     /**
