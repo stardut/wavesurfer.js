@@ -615,7 +615,7 @@ export default class WaveSurfer extends util.Observer {
             setTimeout(() => {
                 const oldScrollParent = this.params.scrollParent;
                 this.params.scrollParent = false;
-                e.fireEvent('click', n * this.getDuration())
+                this.fireEvent('click', progress * this.getDuration())
                 this.params.scrollParent = oldScrollParent;
             }, 0);
         });
