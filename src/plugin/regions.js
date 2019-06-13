@@ -124,7 +124,7 @@ class Region {
         const width = this.wrapper.scrollWidth;
         this.style(regionEl, {
             position: 'absolute',
-            zIndex: 2,
+            zIndex: 3,
             height: '100%',
             top: '0px'
         });
